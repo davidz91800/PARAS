@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculateur Para DZ</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#334155"/>
+    <link rel="apple-touch-icon" href="icon-192.png"> <!-- Icône pour iOS -->
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <img src="https://upload.wikimedia.org/wikipedia/commons/d/d4/Parachute_Riggers_Badge.svg" alt="Insigne Parachutiste" class="logo">
+            <h1>Calculateur de Capacité DZ</h1>
+        </header>
+
+        <!-- ============================================= -->
+        <!-- ============ SECTION RÉSULTATS ============== -->
+        <!-- ============================================= -->
+        <section id="results-section" class="card">
+            <h2>Résultats</h2>
+            <div class="main-result">
+                <span id="total-paras">--</span>
+                <label>Parachutistes au total</label>
+            </div>
+            <div class="sub-result">
+                <p>Par porte : <strong id="paras-per-door">--</strong></p>
+                <p>Avion : <strong>C-130J (2 portes)</strong></p>
+            </div>
+            <div id="error-message" class="error-message"></div>
+        </section>
+
+        <!-- ============================================= -->
+        <!-- =========== SECTION DONNÉES ENTRÉES =========== -->
+        <!-- ============================================= -->
+        <section id="inputs-section">
+            <h2>Données de la Mission</h2>
+            
+            <div class="card">
+                <h3>Zone de Saut (DZ)</h3>
+                <div class="input-group">
+                    <label for="dz-length">Longueur de la DZ (L) en mètres</label>
+                    <input type="number" id="dz-length" placeholder="ex: 2000">
+                </div>
+                <div class="input-group">
+                    <label for="drop-height">Hauteur de largage (H) en mètres AGL</label>
+                    <input type="number" id="drop-height" placeholder="ex: 300">
+                </div>
+                 <div class="input-group">
+                    <label for="dz-altitude">Altitude de la DZ en pieds MSL</label>
+                    <input type="number" id="dz-altitude" placeholder="ex: 500">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Conditions Aéronef & Météo</h3>
+                 <div class="input-group">
+                    <label for="drop-axis">Axe de largage en degrés</label>
+                    <input type="number" id="drop-axis" placeholder="ex: 270">
+                </div>
+                <div class="input-group">
+                    <label for="ias">Vitesse indiquée (IAS) en nœuds</label>
+                    <input type="number" id="ias" value="125">
+                </div>
+                <div class="input-group">
+                    <label>Vent à l'altitude de largage</label>
+                    <div class="wind-group">
+                        <input type="number" id="wind-direction" placeholder="Direction (°)">
+                        <span>/</span>
+                        <input type="number" id="wind-speed" placeholder="Force (kt)">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Paramètres de Saut</h3>
+                <div class="input-group">
+                    <label for="cadence">Cadence par porte (paras/sec)</label>
+                    <input type="number" id="cadence" value="1" step="0.1">
+                </div>
+            </div>
+        </section>
+
+        <!-- ============================================= -->
+        <!-- =========== SECTION DÉTAILS CALCUL ========== -->
+        <!-- ============================================= -->
+        <section id="details-section" class="card">
+            <h2>Détails du Calcul</h2>
+            <div class="details-grid">
+                <p>Vitesse Vraie (TAS) : <strong id="tas-result">-- kt</strong></p>
+                <p>Vent effectif : <strong id="wind-component-result">-- kt</strong></p>
+                <p>Vitesse Sol (V) : <strong id="ground-speed-kt-result">-- kt</strong></p>
+                <p>Vitesse Sol (V) : <strong id="ground-speed-ms-result">-- m/s</strong></p>
+            </div>
+        </section>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Enregistrement du Service Worker pour la PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(reg => console.log('Service Worker enregistré', reg))
+                    .catch(err => console.log('Erreur Service Worker:', err));
+            });
+        }
+    </script>
+</body>
+</html>
