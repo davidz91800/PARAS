@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justificatif de Calcul de Largage DZ</title>
+    
+    <!-- PWA additions -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Static Line</h1>
+            <button id="toggle-all-btn" class="toggle-all-button">Tout rétracter</button>
+        </header>
+
+        <div class="card">
+            <div class="card-header collapsed">
+                <span class="step-number" style="background-color: #0ea5e9;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+                        <path d="M11.983 1.904a3.003 3.003 0 00-5.717 2.223A4.502 4.502 0 005.5 10.5H7v-1H5.5a3.502 3.502 0 013.42-3.49A3.001 3.001 0 0012 3.5a2.5 2.5 0 012.5 2.5A2.994 2.994 0 0112.5 9H11v1h1.5a3.992 3.992 0 003.983-4.096A3.001 3.001 0 0011.983 1.904z"></path>
+                        <path d="M9.25 11.25a.75.75 0 01.75.75v3.69l1.22-1.22a.75.75 0 111.06 1.06l-2.5 2.5a.75.75 0 01-1.06 0l-2.5-2.5a.75.75 0 111.06-1.06l1.22 1.22v-3.69a.75.75 0 01.75-.75z"></path>
+                    </svg>
+                </span>
+                <h2>Récupération Météo (API)</h2>
+                <svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"></path></svg>
+            </div>
+            <div class="card-content">
+                <div class="input-group"><label for="coords">Coordonnées Géographiques</label><input type="text" id="coords" placeholder="ex: N48°51.46 E002°21.11" value="N48°51.46 E002°21.11"></div>
+                <div class="grid" style="gap: 1rem; margin-top: 1rem;">
+                    <div class="input-group"><label for="forecast-date">Date</label><input type="date" id="forecast-date"></div>
+                    <div class="input-group"><label for="forecast-time">Heure (UTC)</label><input type="time" id="forecast-time"></div>
+                </div>
+                <button id="fetch-weather-btn" class="button" style="margin-top:1rem;">Obtenir et Appliquer la Météo</button>
+                <div id="weather-results" style="margin-top:1.5rem; display:none;"><h4>Données Météo Récupérées</h4><div id="weather-results-content"></div></div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <!-- MODIFICATION: Ajout de la classe "collapsed" -->
+            <div class="card-header collapsed"><span class="step-number">1</span><h2>Données & Paramètres</h2><svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg></div>
+            <div class="card-content">
+                <div class="grid">
+                    <div class="input-group"><label for="total-personnel">Total Paras à Larguer</label><input type="number" id="total-personnel" value="90"></div>
+                    <div class="input-group"><label for="aircraft-type">Type Aéronef</label><select id="aircraft-type"><option value="C130J-30" selected>C-130J-30</option><option value="KC130J">KC-130J</option></select></div>
+                    <div class="input-group"><label for="jumper-type">Type Paras</label><select id="jumper-type"><option value="NON-EQUIPPED">Non-Équipé</option><option value="EQUIPPED" selected>Équipé (SOGH)</option></select></div>
+                    <div class="input-group"><label for="center-seats">Sièges Centraux</label><select id="center-seats"><option value="true" selected>Oui</option><option value="false">Non</option></select></div>
+                    <div class="input-group"><label for="security-level">Niveau de Sécurité</label><select id="security-level"><option value="1">1</option><option value="2">2</option><option value="3" selected>3</option><option value="4">4</option></select></div>
+                    <div class="input-group"><label for="parachute-type">Type Parachute</label><select id="parachute-type"><option value="EPI">EPI</option><option value="EPC" selected>EPC</option></select></div>
+                    <div class="input-group"><label for="visual-refs">Réf. Visuelles</label><select id="visual-refs"><option value="true" selected>Oui</option><option value="false">Non</option></select></div>
+                    <div class="input-group"><label for="dz-length">Longueur DZ (L)</label><input type="number" id="dz-length" value="2000"></div>
+                    <div class="input-group"><label for="drop-height">Hauteur Largage (H)</label><input type="number" id="drop-height" value="300"></div>
+                    <div class="input-group">
+                        <label for="dz-altitude">Altitude DZ (Zt)</label>
+                        <div class="input-unit-container" data-unit="ft">
+                            <input type="number" id="dz-altitude" value="500">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label for="drop-axis">Axe Largage</label>
+                        <div class="input-unit-container" data-unit="°">
+                            <input type="number" id="drop-axis" value="45">
+                        </div>
+                    </div>
+                    <div class="input-group">
+                        <label>Vent Largage</label>
+                        <div class="wind-group">
+                             <div class="input-unit-container" data-unit="°">
+                                <input type="number" id="wind-direction" value="135">
+                             </div>
+                             <span>/</span>
+                             <div class="input-unit-container" data-unit="kt">
+                                <input type="number" id="wind-speed" value="15">
+                             </div>
+                        </div>
+                    </div>
+                    <div class="input-group"><label for="cadence">Cadence (paras/sec)</label><input type="number" id="cadence" value="1" step="0.1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header collapsed"><span class="step-number">2</span><h2>Calcul de la Vitesse Sol</h2><svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg></div>
+            <div class="card-content">
+                <div class="calculation-step">
+                    <code class="formula">V = TAS - Comp. Vent Long.</code>
+                    <div class="formula-breakdown">
+                        <div class="detail-item"><span>Vitesse Indiquée (IAS)</span><strong>125 kt</strong></div>
+                        <div class="detail-item"><span>Altitude Densité</span><strong id="density-altitude-detail">-- ft</strong></div>
+                        <div class="detail-item"><span>Vitesse Vraie (TAS)</span><strong id="tas-detail">-- kt</strong></div>
+                        <div class="detail-item"><span>Composante Longitudinale</span><strong id="long-wind-detail">-- kt</strong></div>
+                    </div>
+                     <div class="detail-item"><span><strong>Vitesse Sol (V)</strong></span><strong id="ground-speed-detail">-- kt / -- m/s</strong></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header collapsed"><span class="step-number">3</span><h2>Capacité Théorique de la DZ</h2><svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg></div>
+            <div class="card-content">
+                 <div class="calculation-step">
+                    <code class="formula" id="dz-capacity-formula">P = [(L - H) / V] * C + 1</code>
+                    <div class="formula-breakdown">
+                        <div class="detail-item">
+                            <span>Longueur Utile (L')</span>
+                            <strong id="usable-length-detail">-- m</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Hauteur de largage (H)</span>
+                            <strong id="h-in-formula-detail">-- m</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Vitesse Sol (V)</span>
+                            <strong id="v-in-formula-detail">-- m/s</strong>
+                        </div>
+                        <div class="detail-item">
+                            <span>Cadence (C)</span>
+                            <strong id="c-in-formula-detail">-- paras/s</strong>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <span><strong>Paras / Porte (Théorique)</strong></span>
+                        <strong id="paras-per-door-detail">--</strong>
+                    </div>
+                 </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-header collapsed"><span class="step-number">4</span><h2>Contraintes DZ vs AIRCRAFT</h2><svg class="chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" /></svg></div>
+            <div class="card-content">
+                 <div class="formula-breakdown" style="margin-top: 1rem;">
+                    <div class="detail-item"><span>Capacité Théorique DZ</span><strong id="theoretical-capacity-detail">-- paras</strong></div>
+                    <div class="detail-item"><span>Capacité Soute (Réglementaire)</span><strong id="aircraft-capacity-detail">-- paras</strong></div>
+                </div>
+                <div id="validation-alerts-2"></div>
+            </div>
+        </div>
+        
+        <div class="card">
+             <div class="card-header no-collapse"><span class="step-number" style="background-color: var(--result-text-color);">✓</span><h2>Synthèse & Planification</h2></div>
+            <div class="card-content"><div class="result-box final"><span id="required-passes">--</span><label>Passes Requises</label><div class="final-details">Pour larguer <strong id="total-personnel-recap">--</strong> paras avec une capacité de <strong id="max-paras-per-pass">--</strong> paras/passe.</div></div><div id="validation-alerts"></div></div>
+        </div>
+
+    </div>
+
+    <script src="script.js" defer></script>
+    <!-- PWA addition: Service Worker registration -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js')
+                    .then(registration => {
+                        console.log('Service Worker enregistré avec succès:', registration);
+                    })
+                    .catch(error => {
+                        console.log('Erreur lors de l\'enregistrement du Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
